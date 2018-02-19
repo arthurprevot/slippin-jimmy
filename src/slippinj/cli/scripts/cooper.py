@@ -35,10 +35,13 @@ class Cooper(BasicScript):
         :param args: Namespace
         :param injector: Injector
         """
+        print "## cooper/run/1"
+
         configuration = self.get_wf_configuration(args, injector)
         wf_compiled_dir = configuration.output_directory if configuration.output_directory else args.wf_dir
         cluster_id = configuration.cluster_id if 'cluster_id' in configuration else args.cluster_id
 
+        print "## cooper/run/2"
         properties_file = wf_compiled_dir + '/' + args.job_file_name if args.job_file_name != False else injector.get('interactive_properties_file').get(wf_compiled_dir)
 
         if properties_file:
@@ -46,3 +49,5 @@ class Cooper(BasicScript):
                 'Running {properties_file} in cluster {cluster_id}'.format(properties_file=properties_file,
                                                                            cluster_id=cluster_id))
             injector.get('emr_deploy').run_properties_file(properties_file, cluster_id)
+
+        print "## cooper/run/3, end"

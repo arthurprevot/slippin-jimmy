@@ -92,11 +92,14 @@ class Filesystem(object):
         :param workflow_name: string
         :return: string
         """
+        print "## filesystem/filesystem/generate_tar_file/1"
         self.__logger.debug('Compressing {wf_folder} content inside tar file'.format(wf_folder=wf_folder))
         tar_filename = workflow_name + str(time.time()) + '.tar.gz'
         tar_name = os.path.join(wf_folder, tar_filename)
+        print "## filesystem/filesystem/generate_tar_file/1b", tar_name
         tar = tarfile.open(name=tar_name, mode='w:gz')
         tar.add(wf_folder, arcname=workflow_name)
         tar.close()
 
+        print "## filesystem/filesystem/generate_tar_file/2, end"
         return os.path.join(wf_folder, tar_filename)

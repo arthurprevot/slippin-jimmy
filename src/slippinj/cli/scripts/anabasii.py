@@ -45,6 +45,8 @@ class Anabasii(BasicScript):
         :param args: Namespace
         :param injector: Injector
         """
+        print "## anabasii/run/1"
+
         logger = injector.get('logger')
 
         cluster_id = ''
@@ -54,6 +56,7 @@ class Anabasii(BasicScript):
         if args.script not in __name__:
             logger.info('Getting workflow configuration')
             configuration = self.get_wf_configuration(args, injector)
+            print "## anabasii/run/1b"
             if args.local_mode == False:
                 if 'cluster_id' not in configuration:
                     configuration.cluster_id = args.cluster_id if False != args.cluster_id else injector.get('interactive_cluster_id').get()
@@ -66,6 +69,8 @@ class Anabasii(BasicScript):
             if args.local_mode == False:
                 cluster_id = args.cluster_id if False != args.cluster_id else injector.get('interactive_cluster_id').get()
 
+        print "## anabasii/run/2", wf_compiled_dir
+
         logger.info('Uploading {wf_dir} to the cluster {cluster_id}'.format(wf_dir=wf_compiled_dir, cluster_id=cluster_id))
 
         workflow_folder_name = 'workflow'
@@ -73,3 +78,5 @@ class Anabasii(BasicScript):
             workflow_folder_name = args.wf_dir.strip(os.sep).split(os.sep)[-1]
 
         injector.get('emr_deploy').upload_code(wf_compiled_dir, cluster_id, deploy_folder, workflow_folder_name)
+
+        print "## anabasii/run/3, end"

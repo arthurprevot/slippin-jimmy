@@ -12,10 +12,11 @@ class BasicScript(object):
         Get the arguments to configure current script, should be implementd in children classes
         :return: list
         """
-        raise StandardError('Implement get_arguments method')
+        raise StandardError('Implement get_arguments method')  # TBD
+        #raise ImplementationError('Implement get_arguments method')  # TBD
 
     def run(self, args, injector):
-        raise StandardError('Implement run method')
+        raise StandardError('Implement run method')  # TBD
 
     def configure(self):
         """
@@ -43,14 +44,19 @@ class BasicScript(object):
         object_configuration = injector.get('object_configuration')
 
         if 1 >= len(object_configuration):
+            print "## basic_script/get_wf_configuration/1", "with args:", args
             configuration_file = args.configuration_file if 'configuration_file' in args and None != args.configuration_file else injector.get(
                 'interactive_configuration_file').get(args.wf_dir)
 
+            print "## basic_script/get_wf_configuration/2" #, configuration_file
             configuration = injector.get('wf_configuration').get_workflow_configuration(configuration_file)
 
+            print "## basic_script/get_wf_configuration/3"
             configuration['config_paths'] = configuration_file
 
             for key in configuration:
+                print "## basic_script/get_wf_configuration/4+", key
                 object_configuration[key] = configuration[key]
 
+        print "## basic_script/get_wf_configuration/5, end"
         return object_configuration

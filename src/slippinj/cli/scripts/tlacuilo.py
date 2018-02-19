@@ -59,17 +59,22 @@ class Tlacuilo(BasicScript):
         """
         logger = injector.get('logger')
 
+        print "## tlacuilo/run/1"
         output_directory = args.output_dir if None != args.output_dir else injector.get(
             'filesystem').generate_temp_dir()
 
+        print "## tlacuilo/run/1"
         if not os.path.isabs(output_directory):
             raise IOError('Output directory should be an absolute path in order to save the files')
 
         logger.info('Getting configuration from files')
         configuration = self.get_wf_configuration(args, injector)
+
+        print "## tlacuilo/run/2"
         if args.cluster_information:
             cluster_id = injector.get('interactive_cluster_id').get()
             for k, v in injector.get('emr_cluster').get_cluster_information(cluster_id).items():
+                print "## tlacuilo/run/3"
                 configuration[k] = v
 
         configuration.output_directory = output_directory
@@ -77,6 +82,7 @@ class Tlacuilo(BasicScript):
         if type(args.extra) == list:
             logger.info('Generating configuration from extra variables')
             for value in args.extra:
+                print "## tlacuilo/run/4"
                 value_splitted = value.split('=')
                 if len(value_splitted) > 1:
                     configuration[value_splitted[0]] = value_splitted[1]
@@ -94,6 +100,7 @@ class Tlacuilo(BasicScript):
         logger.info('Checking for .py spark files on selected configuration folders')
         python_files = []
         for path in configuration.config_paths:
+            print "## tlacuilo/run/5"
             root_path = os.path.dirname(path)
             current_path_files = glob.glob(os.path.join(root_path, '*.py'))
             python_files.extend(current_path_files)
@@ -102,7 +109,10 @@ class Tlacuilo(BasicScript):
             logger.info('Copying .py spark files into tmp folder')
             injector.get('filesystem').mkdir(os.path.join(output_directory, 'lib/'))
             for py in python_files:
+                print "## tlacuilo/run/6"
                 injector.get('filesystem').cp(
                     py,
                     os.path.join(output_directory, 'lib/')
                 )
+
+        print "## tlacuilo/run/7, end"

@@ -6,6 +6,10 @@ import os
 
 from injector import Injector
 
+import sys; sys.path.append('/shared-slippinj/src/')
+
+
+
 import slippinj.di
 from slippinj.cli.scripts.anabasii import Anabasii
 from slippinj.cli.scripts.cooper import Cooper

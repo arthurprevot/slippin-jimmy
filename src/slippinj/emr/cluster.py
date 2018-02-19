@@ -71,14 +71,17 @@ class EmrCluster(object):
         :param stop_on_error: boolean
         :return: string
         """
+        print "## emr/cluster/exec_command/1"
 
         self.__logger.debug(
             'Executing command {command} in cluster {cluster_id}'.format(command=command, cluster_id=cluster_id))
         if cluster_id:
             cluster_information = self.get_cluster_information(cluster_id)
+            print "## emr/cluster/exec_command/2"
             return self.__ssh_client.exec_command(command, cluster_information['public_dns'],
                                               cluster_information['key_name'], stop_on_error)
         else:
+            print "## emr/cluster/exec_command/3"
             return subprocess.check_output(command, shell=True)
 
     def open_sftp(self, cluster_id):
